@@ -1,5 +1,5 @@
 #macro dt delta_time/1000000
-#macro tw 32
+#macro tw 16
 #macro th 16
 
 points = 0;

@@ -21,7 +21,7 @@ switch state {
 			}
 		#endregion
 		
-		//if ball goes off screen
+		#region if ball goes off bottom of screen
 		if(y+vspd*dt >= room_height+GameController.border){
 			if(instance_number(Ball) == 1){
 				GameController.life -= 1;
@@ -31,6 +31,9 @@ switch state {
 				instance_destroy();
 			}
 		}
+		#endregion
+		
+		#region hitting bricks
 		if(place_meeting(x, y+vspd*dt, Brick)){
 			with(instance_place(x, y+vspd*dt, Brick)){
 				hp -= 1;	
@@ -43,15 +46,18 @@ switch state {
 			}
 			dir = point_direction(x, y, x-hspd, y+vspd);
 		}
+		#endregion
 		
+		#region paddle collision
 		if(place_meeting(x, y+vspd*dt, Paddle)){
-			dir = point_direction(Paddle.x, Paddle.y, x, y);
+			var offset = sign(Paddle.x - x)*tw*Paddle.paddle_size/2;
+			dir = point_direction(Paddle.x + offset, Paddle.y, x, y);
 			spd += 5;
 			if(spd >= max_spd){
 				spd = max_spd;	
 			}
 		}
-		
+		#endregion
 		
 		hspd = lengthdir_x(spd, dir);
 		vspd = lengthdir_y(spd, dir);
