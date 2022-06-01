@@ -1,17 +1,17 @@
 if(hp <= 0){
-	GameController.points += 10;
+	increase_score(10);
 	var r = random_range(0, 1);
 	if(r < 0.15){
 		with(instance_create_layer(x, y, "Instances", PowerUp)){
-			pu_type = irandom_range(1, powerups.length);
+			pu_type = irandom_range(0, powerups.length-1);
 		}
 	}
-	if(r > 0.8){
+	if(r > 0.95){
 		with(instance_create_layer(x, y, "Instances", PowerDown)){
-			pu_type = irandom_range(0, powerdowns.length);
+			pu_type = irandom_range(0, powerdowns.length-1);
 		}
 	}
 	instance_destroy();
 }
 
-depth = -y;
+//depth = -y;

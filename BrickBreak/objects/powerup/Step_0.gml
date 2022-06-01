@@ -1,12 +1,11 @@
-switch(pu_type){
-	case powerups.stretch: 
-		if(instance_place(x, y, Paddle)){
+if(instance_place(x, y, Paddle)){
+	switch(pu_type){
+		case powerups.stretch: 
 			Paddle.paddle_size += 1;
+			//show_debug_message("grow paddle");
 			instance_destroy();
-		}	
-	break;
-	case powerups.ballsplit: 
-		if(instance_place(x, y, Paddle)){
+		break;
+		case powerups.ballsplit: 
 			with(instance_create_layer(x, y, layer, Ball)){
 				state = states.moving;
 				spd = Ball.spd;
@@ -16,9 +15,10 @@ switch(pu_type){
 				x = Ball.x;
 				y = Ball.y;
 			}
+			//show_debug_message("ball split")
 			instance_destroy();
-		}	
-	break;
-}
 
+		break;
+	}
+}	
 y += vspd*dt;
