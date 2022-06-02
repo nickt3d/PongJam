@@ -18,27 +18,29 @@ function camera_set_view(){
 			
 			camera_borders = camera_set_borders();
 			show_debug_message(camera_borders);
+			window_set_size(vx, vy);
 
 		} else {
 			zoom = dh/gh; //set this value based on the total maximum window size
-			show_debug_message("zoom: " + string(dw/gw));
+			//show_debug_message("zoom: " + string(dw/gw));
 			
-			aspectratio = dh/dw;
+			aspectratio = dw/dh;
 			
 			
-			vy = ~~(gh*zoom);
-			vx = ~~(vy/aspectratio);
+			vx = ~~(gw*zoom);
+			vy = ~~(vx*aspectratio);
 			
 			//toppadding = (vy*0.05)/zoom;
 			//bottompadding = (vy*0.05)/zoom;
 			
-			if(vx & 1) {vx++};
+			if(vy & 1) {vy++};
 			
-			show_debug_message("ar: " + string(aspectratio));
+			//show_debug_message("ar: " + string(aspectratio));
 		
 			
 			
 			camera_borders = camera_set_borders();
-			show_debug_message(camera_borders);
+			//show_debug_message(camera_borders);
+			window_set_size(dw, dh);
 		}
 }
