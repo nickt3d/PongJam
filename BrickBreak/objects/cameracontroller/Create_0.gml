@@ -29,7 +29,7 @@ cy = y;			//the camera y position
 	//set the display width and heights
 	camera_set_view();
 	
-	window_set_size(vx, vy);
+	
 	
 #endregion
 
