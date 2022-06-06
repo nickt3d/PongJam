@@ -11,12 +11,15 @@
 //		grid[# i, j] = 1;	
 //	}
 //}
+
 instance_create_layer(room_width/2, room_height/2, "Instances", CameraController);
 instance_create_layer(x, y, "Instances", Paddle);
 instance_create_layer(x, y, "Instances", Ball);
 
-var grid = set_map_data();
-place_bricks(grid);
+var smallbrick_grid = set_map_data("smallbricks");
+var largebrick_grid = set_map_data("largebricks");
+place_bricks(smallbrick_grid, sbw);
+place_bricks(largebrick_grid, lbw);
 
 
 

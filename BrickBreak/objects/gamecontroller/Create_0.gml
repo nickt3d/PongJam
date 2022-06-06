@@ -1,8 +1,12 @@
 #macro dt delta_time/1000000
-#macro tw 16
-#macro th 16
-#macro etw 8
-#macro eth 8
+//small brick width
+#macro sbw 16
+//large brick width
+#macro lbw 32
+//brick height
+#macro bh 12
+//paddle width
+#macro pw 8
 #macro dw display_get_width()
 #macro dh display_get_height()
 #macro gw 360
@@ -12,17 +16,28 @@
 
 enum states {
 	idle,
-	moving
+	moving,
+	glue
 }
 
 enum powerups {
-	stretch,
 	ballsplit,
+	thruball,
+	aoeball,
+	laserpaddle,
+	ballspd,
+	gluepaddle,
+	stretchpaddle,
+	spdpaddle,
 	length
 }
 
 enum powerdowns {
-	shrink,
+	shrinkpaddle,
+	paddle_spd,
+	ball_spd,
+	wipe_all,
+	brick_guard,
 	length
 }
 

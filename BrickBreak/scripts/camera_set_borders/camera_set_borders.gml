@@ -3,17 +3,17 @@
 function camera_set_borders(){
 	if(dw > dh) {
 		return {
-			left:	~~(CameraController.cx - vx/(2*zoom*aspectratio) - 4),
-			right:	~~(CameraController.cx + vx/(2*zoom*aspectratio) + 4),
-			top:	~~(CameraController.cy - vy/(2*zoom*aspectratio)) + th,				  
-			bottom: ~~(CameraController.cy + vy/(2*zoom*aspectratio)) - th*2
+			left:	~~(CameraController.cx - vx/(2/zoom)),
+			right:	~~(CameraController.cx + vx/(2/zoom)),
+			top:	~~(CameraController.cy - vy/(2/zoom)),				  
+			bottom: ~~(CameraController.cy + vy/(2/zoom))
 		}
 	} else {
 		return {
-			left:	~~(CameraController.cx - ((vx/zoom)*aspectratio)/2),
-			right:	~~(CameraController.cx + ((vx/zoom)*aspectratio)/2),
-			top:	~~(CameraController.cy - (vy/zoom)/2),		  
-			bottom: ~~(CameraController.cy + (vy/zoom)/2)
+			left:	~~(CameraController.cx - vx/(2/zoom)),
+			right:	~~(CameraController.cx + vx/(2/zoom)),
+			top:	~~(CameraController.cy - vy/(2/zoom)),				  
+			bottom: ~~(CameraController.cy + vy/(2/zoom))
 		}
 	}
 }

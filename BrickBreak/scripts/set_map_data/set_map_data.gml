@@ -1,10 +1,15 @@
 ///uses a tile layer to make map tile data returns as a grid
-function set_map_data() {
-	rw = room_width/etw;
-	rh = room_height/eth;
+function set_map_data(tilelayer) {
+	if(tilelayer == "smallbricks"){
+		rw = ~~(room_width/sbw);
+	} else {
+		rw = ~~(room_width/lbw);
+	}
+	
+	rh = ~~(room_height/bh);
 
 	var levelgrid = ds_grid_create(rw, rh);
-	var lay_id = layer_tilemap_get_id("brick_layer");
+	var lay_id = layer_tilemap_get_id(tilelayer);
 	//can add other layers of tile to parse later
 
 	//create the ground layer for this map
@@ -18,35 +23,9 @@ function set_map_data() {
 		
 			tiledatamap[? tiledata.type] = tt;
 			//show_debug_message(tt);
-		
-			//switch (tt){
-			//	case tiletype.stone: 
-			//		tiledatamap[? tiledata.name] = "stone";	
-			//		tiledatamap[? tiledata.type] = tiletype.stone;
-			//	break;
-			//	case tiletype.grass: 
-			//		tiledatamap[? tiledata.name] = "grass";	
-			//		tiledatamap[? tiledata.type] = tiletype.grass;
-			//	break;
-			//	case tiletype.dirt:	 
-			//		tiledatamap[? tiledata.name] = "dirt";
-			//		tiledatamap[? tiledata.type] = tiletype.dirt;
-			//	break;
-			//	case tiletype.water: 
-			//		tiledatamap[? tiledata.name] = "water";	
-			//		tiledatamap[? tiledata.type] = tiletype.water;
-			//	break;
-			//	default: 
-			//		tiledatamap[? tiledata.name] = "none"; 
-			//		tiledatamap[? tiledata.type] = tiletype.none;
-			//	break;	
-			//}
 			
-			if(tt == 46) {
-				levelgrid[# i, j] = 1;
-			} else {
-				levelgrid[# i, j] = 0;
-			}
+			levelgrid[# i, j] = tt;
+			
 		}
 	}
 

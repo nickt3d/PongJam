@@ -25,11 +25,17 @@ cy = y;			//the camera y position
 
 #region zoom
 	//maxzoom = 10;			//the maximum zoom level
-	//zoom	= 4;			//the starting zoom level
+	zoom	= 1;			//the starting zoom level
 	//set the display width and heights
-	camera_set_view();
+	//camera_set_view();
 	
+	vx = gw/zoom;
+	vy = gh/zoom;
 	
+	camera_borders = camera_set_borders();
+	//aspect = dw/ dh;
+	
+	window_set_size(gw, gh);
 	
 #endregion
 
@@ -46,7 +52,7 @@ pitch = 0;
 
 
 //set the view width and height based on the screen size
-var pm = matrix_build_projection_ortho(vx, vy, -10000.0, 10000.0);
+var pm = matrix_build_projection_ortho(vx, vy, 10000.0, -10000.0);
 
 //set the camera projection matrix
 camera_set_proj_mat(camera, pm);
