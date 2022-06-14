@@ -6,7 +6,7 @@ function set_map_data(tilelayer) {
 		rw = ~~(room_width/lbw);
 	}
 	
-	rh = ~~(room_height/bh);
+	rh = ~~(room_height/2/bh);
 
 	var levelgrid = ds_grid_create(rw, rh);
 	var lay_id = layer_tilemap_get_id(tilelayer);
@@ -25,6 +25,15 @@ function set_map_data(tilelayer) {
 			//show_debug_message(tt);
 			
 			levelgrid[# i, j] = tt;
+			
+		}
+	}
+		
+	//debug by filling the grid with the bricks
+	for (var i = 0; i < rw; i++) {
+	    for (var j = 0; j < rh; j++) {
+			
+			levelgrid[# i, j] = 0;
 			
 		}
 	}

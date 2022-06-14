@@ -3,5 +3,6 @@
 function increase_score(s){
 	if(instance_exists(LevelController)){
 		LevelController.levelpoints += s;
+		LevelController.xp += s;
 	}
 }

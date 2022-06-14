@@ -12,6 +12,11 @@
 #macro gw 360
 #macro gh 640
 
+#macro cyan #00d6ff
+#macro pn #e26fab
+#macro gl #ffcd00
+
+global.debug = true;
 
 
 enum states {
@@ -56,4 +61,17 @@ enum cam_mode{
 	move_to_follow_target
 }
 
-window_set_cursor(cr_none);
+enum menu_pages {
+	main,
+	options,
+	levelsel,
+	credits
+}
+
+enum worlddata {
+	name,
+	unlocked,
+	rm
+}
+
+//window_set_cursor(cr_none);

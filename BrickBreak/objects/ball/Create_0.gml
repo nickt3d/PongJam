@@ -27,3 +27,5 @@ spd_stages = [300, 350, 400, 450, 500];
 spd_stage = 1;
 spdup_cd = 0;
 max_spd = 350;
+
+ball_release_cooldown = 3;

@@ -1,17 +1,14 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function place_bricks(g, tw){
-	var cy = #00d6ff;
-	var pn = #e26fab;
-	var gl = #ffcd00;
 	if(tw == lbw){
 		for(var i = 0; i < ds_grid_width(g); i++){
 			for(var j = 0; j < ds_grid_height(g); j++){
 				switch(g[# i, j]){
-					case 0: with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickLg)){
+					case 0: with(instance_create_layer(tw*i + 4, 118+bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickLg)){
 						hp = 1;
 						pts = 5;
-						color = cy;
+						color = cyan;
 					}
 					break;
 				
@@ -19,14 +16,14 @@ function place_bricks(g, tw){
 						with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickLg)){
 							hp = 2;
 							pts = 10;
-							color = cy;
+							color = cyan;
 						}
 					break;
 					case 2:
 						with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickLg)){
 							hp = 3;
 							pts = 15;
-							color = cy;
+							color = cyan;
 						}
 					break;
 					case 3: with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickLg)){
@@ -82,7 +79,7 @@ function place_bricks(g, tw){
 						with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickSm)){
 							hp = 1;
 							pts = 20;
-							color = cy;
+							color = cyan;
 							ghost_spr = smallbrick_ghost_spr;
 						}
 					break;
@@ -90,7 +87,7 @@ function place_bricks(g, tw){
 						with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickSm)){
 							hp = 2;
 							pts = 10;
-							color = cy;
+							color = cyan;
 							ghost_spr = smallbrick_ghost_spr;
 						}
 					break;
@@ -98,7 +95,7 @@ function place_bricks(g, tw){
 						with(instance_create_layer(tw*i + 4, bh*(ds_grid_height(g)-j-1), "BrickLayer", BrickSm)){
 							hp = 3;
 							pts = 20;
-							color = cy;
+							color = cyan;
 							ghost_spr = smallbrick_ghost_spr;
 						}
 					break;

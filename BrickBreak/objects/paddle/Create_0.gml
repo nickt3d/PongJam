@@ -21,3 +21,6 @@ spd_stages = [300, 350, 400, 450, 500];
 spd_stage = 2;
 spdup_cd = 0;
 max_spd = spd_stages[spd_stage];
+
+level = 1;
+xp = 0;

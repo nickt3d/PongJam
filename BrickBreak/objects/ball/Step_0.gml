@@ -1,16 +1,24 @@
 switch state {
 	#region idle
 	case states.idle: 
-		if(mouse_check_button_pressed(mb_left)){
+		if(mouse_check_button_pressed(mb_left) && ball_release_cooldown == 0){
 			state = states.moving;
 			spd = max_spd/2;
 			randomize();
 			dir = irandom_range(45, 135);
 			hspd = lengthdir_x(spd, dir);
 			vspd = lengthdir_y(spd, dir);
+			if(instance_exists(LevelController)){
+				LevelController.time_started = true;
+			}
 		} else {
 			x = Paddle.x;
 			y = Paddle.y - sprite_get_height(paddle_spr)/2;
+			
+			ball_release_cooldown -= dt;
+			if(ball_release_cooldown  <= 0){
+				ball_release_cooldown = 0;	
+			}
 		}
 	break;
 	#endregion
@@ -51,119 +59,125 @@ switch state {
 		#endregion
 		
 		#region hitting bricks
-		if(place_meeting(x, y+vspd*dt, Brick)){
-			with(instance_place(x, y+vspd*dt, Brick)){
-				#region aoe ball
-				switch(other.aoe){
-					#region small aoe
-						case 1: //check the cardinal directions for other bricks
-							if(instance_place(x, y + bh*1.5, Brick)){
-								damage_brick(instance_place(x, y + bh*1.5, Brick));
-							}
-							if(instance_place(x, y - bh/2, Brick)){
-								damage_brick(instance_place(x, y - bh/2, Brick));
-							}
-							if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
-								damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y, Brick));
-							}
-							if(instance_place(x - 8, y, Brick)){
-								damage_brick(instance_place(x-8, y, Brick));
-							}
+		if(instance_exists(Brick)){
+			if(place_meeting(x, y+vspd*dt, Brick)){
+				with(instance_place(x, y+vspd*dt, Brick)){
+					#region aoe ball
+					switch(other.aoe){
+						#region small aoe
+							case 1: //check the cardinal directions for other bricks
+								if(instance_place(x, y + bh*1.5, Brick)){
+									damage_brick(instance_place(x, y + bh*1.5, Brick));
+								}
+								if(instance_place(x, y - bh/2, Brick)){
+									damage_brick(instance_place(x, y - bh/2, Brick));
+								}
+								if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
+									damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y, Brick));
+								}
+								if(instance_place(x - 8, y, Brick)){
+									damage_brick(instance_place(x-8, y, Brick));
+								}
 						
-						break
-					#endregion
-					#region medium aoe
-						case 2: //check the cardinal directions for another brick
-							if(instance_place(x, y+ bh*1.5, Brick)){
-								damage_brick(instance_place(x, y + bh*1.5, Brick));
-							}
-							if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick)){
-								damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick));
-							}
-							if(instance_place(x- 8, y + bh*1.5, Brick)){
-								damage_brick(instance_place(x-8, y + bh*1.5, Brick));
-							}
-							if(instance_place(x, y - bh/2, Brick)){
-								damage_brick(instance_place(x, y - bh/2, Brick));
-							}
-							if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick)){
-								damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), tiledata.type - bh/2, Brick));
-							}
-							if(instance_place(x- 8, y - bh/2, Brick)){
-								damage_brick(instance_place(x- 8, y - bh/2, Brick));
-							}
-							if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
-								damage_brick(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick));
-							}
-							if(instance_place(x - 8, y, Brick)){
-								damage_brick(instance_place(x - 8, y, Brick));
-							}				
-						break;
-					#endregion
-					#region large aoe
-						case 3: //check the cardinal directions for another brick
-							if(instance_place(x, y + bh*2.5, Brick)){
-								damage_brick(instance_place(x, y + bh*1.5, Brick));
-							}
-							if(instance_place(x, y - bh*1.5, Brick)){
-								damage_brick(instance_place(x, y + bh*1.5, Brick));
-							}
-							var ts = instance_place(x-8, y, Brick);
-							if(instance_exists(ts)){
-								if(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick)){
-									damage_brick(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick));
+							break
+						#endregion
+						#region medium aoe
+							case 2: //check the cardinal directions for another brick
+								if(instance_place(x, y+ bh*1.5, Brick)){
+									damage_brick(instance_place(x, y + bh*1.5, Brick));
 								}
-							}
-							ts = noone;
-							ts = instance_place(x+sprite_width+8, y, Brick);
-							if(instance_exists(ts)){
-								if(instance_place(x +sprite_width + ts.sprite_width, y - bh*1.5, Brick)){
-									damage_brick(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick));
+								if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick)){
+									damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick));
 								}
-							}
-							if(instance_place(x, y + bh*1.5, Brick)){
-								damage_brick(instance_place(x, y + bh*1.5, Brick));
-							}
-							if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick)){
-								damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick));
-							}
-							if(instance_place(x- 8, y + bh*1.5, Brick)){
-								damage_brick(instance_place(x-8, y + bh*1.5, Brick));
-							}
-							if(instance_place(x, y - bh/2, Brick)){
-								damage_brick(instance_place(x, y - bh/2, Brick));
-							}
-							if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick)){
-								damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick));
-							}
-							if(instance_place(x- 8, y - bh/2, Brick)){
-								damage_brick(instance_place(x- 8, y - bh/2, Brick));
-							}
-							if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
-								damage_brick(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick));
-							}
-							if(instance_place(x - 8, y, Brick)){
-								damage_brick(instance_place(x - 8, y, Brick));
-							}				
-						break;
+								if(instance_place(x- 8, y + bh*1.5, Brick)){
+									damage_brick(instance_place(x-8, y + bh*1.5, Brick));
+								}
+								if(instance_place(x, y - bh/2, Brick)){
+									damage_brick(instance_place(x, y - bh/2, Brick));
+								}
+								if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick)){
+									damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), tiledata.type - bh/2, Brick));
+								}
+								if(instance_place(x- 8, y - bh/2, Brick)){
+									damage_brick(instance_place(x- 8, y - bh/2, Brick));
+								}
+								if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
+									damage_brick(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick));
+								}
+								if(instance_place(x - 8, y, Brick)){
+									damage_brick(instance_place(x - 8, y, Brick));
+								}				
+							break;
+						#endregion
+						#region large aoe
+							case 3: //check the cardinal directions for another brick
+								if(instance_place(x, y + bh*2.5, Brick)){
+									damage_brick(instance_place(x, y + bh*1.5, Brick));
+								}
+								if(instance_place(x, y - bh*1.5, Brick)){
+									damage_brick(instance_place(x, y + bh*1.5, Brick));
+								}
+								var ts = instance_place(x-8, y, Brick);
+								if(instance_exists(ts)){
+									if(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick)){
+										damage_brick(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick));
+									}
+								}
+								ts = noone;
+								ts = instance_place(x+sprite_width+8, y, Brick);
+								if(instance_exists(ts)){
+									if(instance_place(x +sprite_width + ts.sprite_width, y - bh*1.5, Brick)){
+										damage_brick(instance_place(x - 8 - ts.sprite_width, y - bh*1.5, Brick));
+									}
+								}
+								if(instance_place(x, y + bh*1.5, Brick)){
+									damage_brick(instance_place(x, y + bh*1.5, Brick));
+								}
+								if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick)){
+									damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y + bh*1.5, Brick));
+								}
+								if(instance_place(x- 8, y + bh*1.5, Brick)){
+									damage_brick(instance_place(x-8, y + bh*1.5, Brick));
+								}
+								if(instance_place(x, y - bh/2, Brick)){
+									damage_brick(instance_place(x, y - bh/2, Brick));
+								}
+								if(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick)){
+									damage_brick(instance_place(x+ (sprite_get_width(sprite_index)*1.5), y - bh/2, Brick));
+								}
+								if(instance_place(x- 8, y - bh/2, Brick)){
+									damage_brick(instance_place(x- 8, y - bh/2, Brick));
+								}
+								if(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick)){
+									damage_brick(instance_place(x + (sprite_get_width(sprite_index)*1.5), y, Brick));
+								}
+								if(instance_place(x - 8, y, Brick)){
+									damage_brick(instance_place(x - 8, y, Brick));
+								}				
+							break;
+						#endregion
+					}
 					#endregion
-				}
-				#endregion
 				
-				//damage the brick the ball hit
-				damage_brick(self);
-			}
+					//damage the brick the ball hit
+					damage_brick(self);
+				}
 			
-			//if thru ball(just ignore the collisions
-			if(!thruball && !Brick.brick_guard){
-				dir = point_direction(x, y, x+hspd, y-vspd);
-			}
-		} else if(place_meeting(x+hspd *dt, y, Brick)){
-			with(instance_place(x+hspd *dt, y, Brick)){
-				damage_brick(self);
-			}
-			if(!thruball && !Brick.brick_guard){
-				dir = point_direction(x, y, x-hspd, y+vspd);
+				//if thru ball(just ignore the collisions
+				if(instance_exists(Brick)){
+					if(!thruball && !Brick.brick_guard){
+						dir = point_direction(x, y, x+hspd, y-vspd);
+					}
+				}
+			} else if(place_meeting(x+hspd *dt, y, Brick)){
+				with(instance_place(x+hspd *dt, y, Brick)){
+					damage_brick(self);
+				}
+				if(instance_exists(Brick)){
+					if(!thruball && !Brick.brick_guard){
+						dir = point_direction(x, y, x-hspd, y+vspd);
+					}
+				}
 			}
 		}
 		#endregion
